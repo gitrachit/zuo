@@ -3,5 +3,6 @@
 
 export * from "./headers";
 export * from "./map-executions";
+export * from "./match";
 export * from "./parse-file";
 export * from "./symbol";
