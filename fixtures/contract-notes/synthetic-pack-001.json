@@ -1,0 +1,321 @@
+{
+  "policy": {
+    "equity_product_inference": "If an equity symbol has zero net quantity across the complete trade date, classify matched quantity as intraday; any residual quantity is delivery. Show inferred assumption per trade/position. Never apply this rule to derivatives.",
+    "important": "Classification must aggregate all fills for account + exchange + segment + symbol + trade_date before deciding."
+  },
+  "fixtures": [
+    {
+      "id": "EQ_DELIVERY_001",
+      "title": "Synthetic Contract Note - Equity Delivery",
+      "trade_date": "2026-07-13",
+      "segment": "NSE-CM",
+      "symbol": "RELIANCE",
+      "instrument": "EQ",
+      "classification": "DELIVERY",
+      "product_assumption": "CNC inferred because position remains open after trade date",
+      "trades": [
+        {
+          "order_id": "260713000101",
+          "trade_id": "T10001",
+          "time": "10:15:21",
+          "side": "BUY",
+          "qty": 10,
+          "price": 1520.0
+        },
+        {
+          "order_id": "260713000102",
+          "trade_id": "T10002",
+          "time": "10:15:23",
+          "side": "BUY",
+          "qty": 5,
+          "price": 1518.0
+        }
+      ],
+      "carry_qty": 15,
+      "computed": {
+        "buy_value": 22790.0,
+        "sell_value": 0.0,
+        "charges": {
+          "brokerage": 0.0,
+          "exchange_transaction_charges": 0.68,
+          "sebi_charges": 0.02,
+          "stt": 22.79,
+          "ctt": 0.0,
+          "stamp_duty": 3.42,
+          "gst": 0.13
+        },
+        "total_charges": 27.04,
+        "net_obligation": -22817.04
+      },
+      "tariff": {
+        "brokerage_type": "zero",
+        "exchange_rate": "0.0000297",
+        "sebi_rate": "0.000001",
+        "stt_buy_rate": "0.001",
+        "stt_sell_rate": "0.001",
+        "stamp_buy_rate": "0.00015"
+      }
+    },
+    {
+      "id": "EQ_INTRADAY_001",
+      "title": "Synthetic Contract Note - Equity Intraday",
+      "trade_date": "2026-07-14",
+      "segment": "NSE-CM",
+      "symbol": "INFY",
+      "instrument": "EQ",
+      "classification": "INTRADAY",
+      "product_assumption": "MIS inferred because net quantity is zero on the trade date",
+      "trades": [
+        {
+          "order_id": "260714000201",
+          "trade_id": "T20001",
+          "time": "09:35:10",
+          "side": "BUY",
+          "qty": 40,
+          "price": 1600.0
+        },
+        {
+          "order_id": "260714000202",
+          "trade_id": "T20002",
+          "time": "14:42:18",
+          "side": "SELL",
+          "qty": 25,
+          "price": 1612.0
+        },
+        {
+          "order_id": "260714000203",
+          "trade_id": "T20003",
+          "time": "15:05:02",
+          "side": "SELL",
+          "qty": 15,
+          "price": 1608.0
+        }
+      ],
+      "carry_qty": 0,
+      "computed": {
+        "buy_value": 64000.0,
+        "sell_value": 64420.0,
+        "charges": {
+          "brokerage": 38.53,
+          "exchange_transaction_charges": 3.81,
+          "sebi_charges": 0.13,
+          "stt": 16.11,
+          "ctt": 0.0,
+          "stamp_duty": 1.92,
+          "gst": 7.64
+        },
+        "total_charges": 68.14,
+        "net_obligation": 351.86
+      },
+      "tariff": {
+        "brokerage_type": "percent_cap",
+        "brokerage_rate": "0.0003",
+        "brokerage_cap": "20",
+        "exchange_rate": "0.0000297",
+        "sebi_rate": "0.000001",
+        "stt_sell_rate": "0.00025",
+        "stamp_buy_rate": "0.00003"
+      }
+    },
+    {
+      "id": "INDEX_OPTION_DAY_001",
+      "title": "Synthetic Contract Note - Index Option Buy and Sell Same Day",
+      "trade_date": "2026-07-15",
+      "segment": "NFO-OPTIDX",
+      "symbol": "NIFTY26JUL24500CE",
+      "instrument": "INDEX_OPTION",
+      "classification": "INTRADAY_DERIVATIVE",
+      "product_assumption": "Derivative product classification comes from instrument; both lots closed same day",
+      "trades": [
+        {
+          "order_id": "260715000301",
+          "trade_id": "T30001",
+          "time": "10:02:11",
+          "side": "BUY",
+          "qty": 75,
+          "price": 120.0
+        },
+        {
+          "order_id": "260715000302",
+          "trade_id": "T30002",
+          "time": "13:28:44",
+          "side": "SELL",
+          "qty": 75,
+          "price": 148.0
+        }
+      ],
+      "carry_qty": 0,
+      "computed": {
+        "buy_value": 9000.0,
+        "sell_value": 11100.0,
+        "charges": {
+          "brokerage": 40.0,
+          "exchange_transaction_charges": 7.04,
+          "sebi_charges": 0.02,
+          "stt": 11.1,
+          "ctt": 0.0,
+          "stamp_duty": 0.27,
+          "gst": 8.47
+        },
+        "total_charges": 66.9,
+        "net_obligation": 2033.1
+      },
+      "tariff": {
+        "brokerage_type": "flat",
+        "brokerage_flat": "20",
+        "exchange_rate": "0.0003503",
+        "sebi_rate": "0.000001",
+        "stt_sell_rate": "0.001",
+        "stamp_buy_rate": "0.00003"
+      }
+    },
+    {
+      "id": "INDEX_FUTURE_001",
+      "title": "Synthetic Contract Note - Index Futures",
+      "trade_date": "2026-07-16",
+      "segment": "NFO-FUTIDX",
+      "symbol": "BANKNIFTY26JULFUT",
+      "instrument": "INDEX_FUTURE",
+      "classification": "INTRADAY_DERIVATIVE",
+      "product_assumption": "Futures position opened and closed on the same trade date",
+      "trades": [
+        {
+          "order_id": "260716000401",
+          "trade_id": "T40001",
+          "time": "09:51:09",
+          "side": "SELL",
+          "qty": 30,
+          "price": 56500.0
+        },
+        {
+          "order_id": "260716000402",
+          "trade_id": "T40002",
+          "time": "12:11:37",
+          "side": "BUY",
+          "qty": 30,
+          "price": 56320.0
+        }
+      ],
+      "carry_qty": 0,
+      "computed": {
+        "buy_value": 1689600.0,
+        "sell_value": 1695000.0,
+        "charges": {
+          "brokerage": 40.0,
+          "exchange_transaction_charges": 58.55,
+          "sebi_charges": 3.38,
+          "stt": 339.0,
+          "ctt": 0.0,
+          "stamp_duty": 33.79,
+          "gst": 18.35
+        },
+        "total_charges": 493.07,
+        "net_obligation": 4906.93
+      },
+      "tariff": {
+        "brokerage_type": "flat",
+        "brokerage_flat": "20",
+        "exchange_rate": "0.0000173",
+        "sebi_rate": "0.000001",
+        "stt_sell_rate": "0.0002",
+        "stamp_buy_rate": "0.00002"
+      }
+    },
+    {
+      "id": "STOCK_OPTION_001",
+      "title": "Synthetic Contract Note - Stock Option",
+      "trade_date": "2026-07-17",
+      "segment": "NFO-OPTSTK",
+      "symbol": "TCS26JUL3500PE",
+      "instrument": "STOCK_OPTION",
+      "classification": "OPEN_DERIVATIVE_POSITION",
+      "product_assumption": "Derivative instrument; position remains open at end of trade date",
+      "trades": [
+        {
+          "order_id": "260717000501",
+          "trade_id": "T50001",
+          "time": "11:20:05",
+          "side": "BUY",
+          "qty": 175,
+          "price": 52.5
+        }
+      ],
+      "carry_qty": 175,
+      "computed": {
+        "buy_value": 9187.5,
+        "sell_value": 0.0,
+        "charges": {
+          "brokerage": 20.0,
+          "exchange_transaction_charges": 3.22,
+          "sebi_charges": 0.01,
+          "stt": 0.0,
+          "ctt": 0.0,
+          "stamp_duty": 0.28,
+          "gst": 4.18
+        },
+        "total_charges": 27.69,
+        "net_obligation": -9215.19
+      },
+      "tariff": {
+        "brokerage_type": "flat",
+        "brokerage_flat": "20",
+        "exchange_rate": "0.0003503",
+        "sebi_rate": "0.000001",
+        "stt_sell_rate": "0.001",
+        "stamp_buy_rate": "0.00003"
+      }
+    },
+    {
+      "id": "MCX_GOLDM_001",
+      "title": "Synthetic Contract Note - MCX GOLDM Futures",
+      "trade_date": "2026-07-18",
+      "segment": "MCX-FUTCOM",
+      "symbol": "GOLDM26AUGFUT",
+      "instrument": "COMMODITY_FUTURE",
+      "classification": "INTRADAY_DERIVATIVE",
+      "product_assumption": "Commodity futures position opened and closed on the same trade date",
+      "trades": [
+        {
+          "order_id": "260718000601",
+          "trade_id": "T60001",
+          "time": "17:12:31",
+          "side": "BUY",
+          "qty": 1,
+          "price": 74850.0
+        },
+        {
+          "order_id": "260718000602",
+          "trade_id": "T60002",
+          "time": "20:48:52",
+          "side": "SELL",
+          "qty": 1,
+          "price": 75240.0
+        }
+      ],
+      "carry_qty": 0,
+      "computed": {
+        "buy_value": 74850.0,
+        "sell_value": 75240.0,
+        "charges": {
+          "brokerage": 40.0,
+          "exchange_transaction_charges": 3.15,
+          "sebi_charges": 0.15,
+          "stt": 0.0,
+          "ctt": 7.52,
+          "stamp_duty": 1.5,
+          "gst": 7.79
+        },
+        "total_charges": 60.11,
+        "net_obligation": 329.89
+      },
+      "tariff": {
+        "brokerage_type": "flat",
+        "brokerage_flat": "20",
+        "exchange_rate": "0.000021",
+        "sebi_rate": "0.000001",
+        "ctt_sell_rate": "0.0001",
+        "stamp_buy_rate": "0.00002"
+      }
+    }
+  ]
+}
