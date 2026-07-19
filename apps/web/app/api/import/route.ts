@@ -7,6 +7,10 @@ import {
 } from "@zuo/importer";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import {
+  chargeTradesForAccount,
+  type ChargeableExecution,
+} from "@/lib/import/charge-trades";
+import {
   executionRowFromDraft,
   matchableFromRow,
   tradeRowFromDraft,
@@ -23,6 +27,12 @@ export interface ImportSummary {
   warnings: ImportWarning[];
   /** Console tradebooks carry no MIS/CNC column — surfaced in the UI (spec v1). */
   productUnknown: true;
+  /** trades whose dates fall outside every charge-rate era (charges null) */
+  chargesUnavailable: number;
+  /** IST dates with no charge-rate era coverage */
+  uncoveredDates: string[];
+  /** equity symbol-days where intraday/delivery was inferred as MIXED */
+  mixedEquityDays: number;
 }
 
 const CHUNK = 500;
@@ -100,14 +110,47 @@ export async function POST(request: Request): Promise<Response> {
   const { data: allRows, error: fetchError } = await supabase
     .from("executions")
     .select(
-      "id, symbol, segment, product, side, quantity, price_paise, executed_at, underlying, expiry, strike_paise, option_type",
+      "id, symbol, exchange, segment, product, side, quantity, price_paise, executed_at, underlying, expiry, strike_paise, option_type, broker_order_id",
     )
     .eq("broker_account_id", accountId);
   if (fetchError) return Response.json({ error: fetchError.message }, { status: 500 });
 
-  const trades = matchExecutions(
-    (allRows as (ExecutionRow & { id: string })[]).map(matchableFromRow),
+  const executionRows = allRows as (ExecutionRow & { id: string })[];
+  const trades = matchExecutions(executionRows.map(matchableFromRow));
+
+  // charges: estimate per trade from note-level engine output (phase 2)
+  const chargeable: ChargeableExecution[] = executionRows.map((row) => ({
+    id: row.id,
+    brokerOrderId: row.broker_order_id,
+    side: row.side as ChargeableExecution["side"],
+    quantity: row.quantity,
+    pricePaise: row.price_paise,
+    executedAt: new Date(row.executed_at).toISOString(),
+    exchange: row.exchange,
+    symbol: row.symbol,
+    segment: row.segment as ChargeableExecution["segment"],
+    optionType: row.option_type as ChargeableExecution["optionType"],
+  }));
+  const chargeResult = chargeTradesForAccount(
+    chargeable,
+    trades.map((t, i) => ({
+      key: String(i),
+      openedAt: t.openedAt,
+      closedAt: t.closedAt,
+      grossPnlPaise: t.grossPnlPaise,
+      executionIds: t.executionIds,
+    })),
   );
+  const chargedTrades = trades.map((t, i) => {
+    const charge = chargeResult.perTrade.get(String(i));
+    if (!charge) return t;
+    return {
+      ...t,
+      chargesPaise: charge.chargesPaise,
+      charges: charge.charges,
+      netPnlPaise: charge.netPnlPaise,
+    };
+  });
 
   const { error: deleteError } = await supabase
     .from("trades")
@@ -115,7 +158,7 @@ export async function POST(request: Request): Promise<Response> {
     .eq("broker_account_id", accountId);
   if (deleteError) return Response.json({ error: deleteError.message }, { status: 500 });
 
-  for (const chunk of chunked(trades.map((t) => tradeRowFromDraft(t, user.id, accountId)))) {
+  for (const chunk of chunked(chargedTrades.map((t) => tradeRowFromDraft(t, user.id, accountId)))) {
     const { error } = await supabase.from("trades").insert(chunk);
     if (error) return Response.json({ error: error.message }, { status: 500 });
   }
@@ -129,6 +172,9 @@ export async function POST(request: Request): Promise<Response> {
     openPositions: trades.filter((t) => t.closedAt === null).length,
     warnings: mapped.warnings,
     productUnknown: true,
+    chargesUnavailable: [...chargeResult.perTrade.values()].filter((v) => v === null).length,
+    uncoveredDates: chargeResult.uncoveredDates,
+    mixedEquityDays: chargeResult.mixedEquityDays,
   };
   return Response.json(summary);
 }

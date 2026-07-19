@@ -5,5 +5,6 @@
 export * from "./compute";
 export * from "./compute-note";
 export * from "./config-schema";
+export * from "./equity-inference";
 export * from "./group-orders";
 export * from "./select-config";

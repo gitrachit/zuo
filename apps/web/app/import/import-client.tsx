@@ -68,6 +68,18 @@ export function ImportClient() {
           <p>
             {summary.tradesFormed} trades formed · {summary.openPositions} open positions
           </p>
+          {summary.chargesUnavailable > 0 && (
+            <p className="mt-1 text-xs text-amber-600 dark:text-amber-500">
+              Charges unavailable for {summary.chargesUnavailable} trades — no rate table
+              covers {summary.uncoveredDates.slice(0, 3).join(", ")}
+              {summary.uncoveredDates.length > 3 ? "…" : ""} yet.
+            </p>
+          )}
+          {summary.mixedEquityDays > 0 && (
+            <p className="mt-1 text-xs text-zinc-500">
+              {summary.mixedEquityDays} equity day(s) inferred as mixed intraday/delivery.
+            </p>
+          )}
           <p className="mt-2 text-xs text-zinc-500">
             Note: Console tradebooks don&apos;t say MIS vs CNC, so product-based splits are
             unavailable for these imports.

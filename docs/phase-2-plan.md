@@ -62,3 +62,9 @@ inferred classification is surfaced in the UI as "inferred" with the reason.
   turnover components aggregate per note group then round once; GST on rounded
   components. All six notes match to the paisa. config/zerodha.json eras remain
   verifiedAgainstContractNotes=false until REAL Zerodha notes arrive.
+- 2026-07-19 — PR D: equity inference (FIFO matched→intraday, residual→delivery,
+  mixed days), per-trade allocation (day-level exact, pro-rata by execution
+  turnover, residue-to-last), netPnl in DB + /import UI (Net P&L primary).
+  E2E-verified on live Supabase. Caught in e2e: route select was missing
+  exchange + broker_order_id columns (txn=0, brokerage undergrouped) — fixed.
+  Per-trade figures are documented estimates; uncovered eras → charges null.
