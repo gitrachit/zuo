@@ -54,8 +54,10 @@ function cellString(cell: Cell): string {
 
 /**
  * "1450.75" | 1450.75 → 145075 paise. Integer string math; digits beyond the
- * paisa round half-up. `rounded` is true only when the dropped digits are
- * non-zero — Console pads every price to 6dp ("90554.000000"), which is lossless.
+ * paisa round half-up (to nearest). `rounded` flags only material rounding:
+ * Console pads to 6dp and emits float artifacts ("139.800003", "241.399994")
+ * whose true value IS a clean paisa — those stay silent. A price genuinely
+ * between paise (CDS ticks like 83.5625) is flagged.
  */
 export function rupeesToPaise(value: Cell): { paise: number; rounded: boolean } | null {
   const s = cellString(value);
@@ -65,8 +67,12 @@ export function rupeesToPaise(value: Cell): { paise: number; rounded: boolean } 
   const base = Number(match[1]) * 100 + Number((frac + "00").slice(0, 2));
   const dropped = frac.slice(2);
   if (/^0*$/.test(dropped)) return { paise: base, rounded: false };
-  const roundUp = Number(dropped[0]) >= 5;
-  return { paise: base + (roundUp ? 1 : 0), rounded: true };
+  // fraction of one paisa carried by the dropped digits (heuristic only —
+  // the money math above stays pure integer)
+  const f = Number(`0.${dropped}`);
+  const paise = base + (f >= 0.5 ? 1 : 0);
+  const distanceFromCleanPaisa = Math.min(f, 1 - f);
+  return { paise, rounded: distanceFromCleanPaisa > 0.01 };
 }
 
 /** Accepts YYYY-MM-DD, DD-MM-YYYY, DD/MM/YYYY, ISO datetime, Date → YYYY-MM-DD. */
