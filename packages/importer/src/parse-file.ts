@@ -32,7 +32,8 @@ function cellValue(value: ExcelJS.CellValue): Cell {
 
 export async function parseTradebookXlsx(data: ArrayBuffer | Buffer): Promise<TabularFile> {
   const workbook = new ExcelJS.Workbook();
-  await workbook.xlsx.load(data as Buffer);
+  // exceljs ships pre-Node-22 Buffer typings; runtime accepts both fine
+  await workbook.xlsx.load(data as unknown as Parameters<typeof workbook.xlsx.load>[0]);
   const sheet = workbook.worksheets[0];
   if (!sheet) return { headers: [], rows: [] };
 
