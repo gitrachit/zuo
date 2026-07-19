@@ -14,9 +14,12 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@zuo/types": "workspace:*"
+    "@zuo/types": "workspace:*",
+    "exceljs": "^4.4.0",
+    "papaparse": "^5.5.4"
   },
   "devDependencies": {
+    "@types/papaparse": "^5.5.2",
     "eslint": "^9.39.0",
     "typescript": "^5.9.0",
     "typescript-eslint": "^8.64.0",
