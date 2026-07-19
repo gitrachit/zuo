@@ -32,6 +32,10 @@ Solo founder (RS). You (Claude Code) are the primary builder. Read PLAN.md for p
 - Every packages/* function ships with unit tests. Charges + analytics require table-driven tests against fixtures in `fixtures/`.
 - Touch only what the task asks for. No drive-by refactors.
 - Commit style: `feat|fix|chore(scope): message`. Small, reviewable commits.
+- Ship via PR, always: when a work session's changes are done, open a PR to `main`,
+  verify CI is green (plus a local `pnpm turbo test lint typecheck build` and a
+  smoke run of anything user-facing), then merge (squash). Never leave finished
+  work sitting unmerged on a branch without telling RS why.
 
 ## Testing gates
 - `pnpm turbo test lint typecheck` must pass before any commit.
