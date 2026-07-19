@@ -1,5 +1,6 @@
-// Canonical shared types — seeded in phase 0 with the stable enums from
-// docs/trade-model.md. Execution/Trade interfaces land in phase 1.
+// Canonical shared types — docs/trade-model.md is the source of truth.
+
+export * from "./trade-model";
 
 export const APP_NAME = "Zuo";
 

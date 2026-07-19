@@ -1,7 +1,8 @@
 # Supabase
 
-Home for the Supabase CLI project (`supabase init` + `supabase link`) once RS has
-created the hosted project (region: ap-south-1 Mumbai). No schema in phase 0 —
-migrations start in phase 1 with the trade model (`docs/trade-model.md`).
+Hosted project: ap-south-1 (Mumbai). Schema lives in `migrations/` — the trade
+model per `docs/trade-model.md`.
 
-`migrations/` is kept in-tree so phase 1 SQL has a stable home.
+Applying migrations (until `supabase link` is set up): Supabase dashboard →
+SQL Editor → paste the migration file → Run. Apply files in filename order,
+each exactly once. Never edit an applied migration — add a new one.
