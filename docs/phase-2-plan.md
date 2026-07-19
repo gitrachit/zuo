@@ -47,5 +47,18 @@ adjust a fixture.
    charged as intraday, others as delivery. This heuristic is surfaced per
    trade in the UI. RS to veto/confirm.
 
+## Equity product inference (decided 2026-07-19, per RS's fixture pack README)
+Aggregate all fills per (account, exchange, segment, symbol, IST trade date):
+matched same-day buy/sell quantity is charged as INTRADAY; residual quantity
+as DELIVERY. A symbol-day can be MIXED. Never applied to derivatives. Every
+inferred classification is surfaced in the UI as "inferred" with the reason.
+
 ## Status log
 - 2026-07-19 — Phase 2 opened (RS confirmed phase 1 close). PR A next.
+- 2026-07-19 — PR A (config + eras) and PR B (per-order compute) merged.
+- 2026-07-19 — RS provided a contract-note pack → PR C. Pack is SYNTHETIC
+  (self-describing tariffs; e.g. 2024-era F&O STT on 2026 dates), so it gates
+  ENGINE MATH only — aggregation + rounding: brokerage rounds per order;
+  turnover components aggregate per note group then round once; GST on rounded
+  components. All six notes match to the paisa. config/zerodha.json eras remain
+  verifiedAgainstContractNotes=false until REAL Zerodha notes arrive.
