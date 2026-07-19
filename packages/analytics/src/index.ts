@@ -1,4 +1,5 @@
-// Deterministic metrics engine — implemented in phase 3 per PLAN.md.
-// Phase 0 stub exists so the workspace, test runner, and CI exercise this package.
+// Deterministic metrics engine (PLAN.md phase 3). Pure functions; the single
+// source of every dashboard and copilot number (CLAUDE.md rule #1).
 
-export const PACKAGE_NAME = "@zuo/analytics";
+export * from "./types";
+export * from "./metrics";
