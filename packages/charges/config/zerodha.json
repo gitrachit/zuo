@@ -1,0 +1,147 @@
+{
+  "broker": "zerodha",
+  "entries": [
+    {
+      "effectiveFrom": "2026-04-01",
+      "effectiveTo": null,
+      "source": "https://zerodha.com/charges/ fetched 2026-07-19 (post 2026-04-01 F&O STT revision)",
+      "verifiedAgainstContractNotes": false,
+      "rates": {
+        "EQ_DELIVERY": {
+          "brokerage": { "type": "zero" },
+          "stt": { "percent": 0.1, "on": "both" },
+          "exchangeTxnPercent": { "NSE": 0.00307, "BSE": 0.00375 },
+          "sebiPerCroreRupees": 10,
+          "gstPercent": 18,
+          "stampDuty": { "percent": 0.015, "on": "buy" },
+          "dpPerScripSellDayPaise": 1534
+        },
+        "EQ_INTRADAY": {
+          "brokerage": { "type": "percentCappedPerOrder", "percent": 0.03, "capPaise": 2000 },
+          "stt": { "percent": 0.025, "on": "sell" },
+          "exchangeTxnPercent": { "NSE": 0.00307, "BSE": 0.00375 },
+          "sebiPerCroreRupees": 10,
+          "gstPercent": 18,
+          "stampDuty": { "percent": 0.003, "on": "buy" }
+        },
+        "FUT": {
+          "brokerage": { "type": "percentCappedPerOrder", "percent": 0.03, "capPaise": 2000 },
+          "stt": { "percent": 0.05, "on": "sell" },
+          "exchangeTxnPercent": { "NSE": 0.00183, "BSE": 0 },
+          "sebiPerCroreRupees": 10,
+          "gstPercent": 18,
+          "stampDuty": { "percent": 0.002, "on": "buy" }
+        },
+        "OPT": {
+          "brokerage": { "type": "flatPerOrder", "paise": 2000 },
+          "stt": { "percent": 0.15, "on": "sell" },
+          "exchangeTxnPercent": { "NSE": 0.03553, "BSE": 0.0325 },
+          "sebiPerCroreRupees": 10,
+          "gstPercent": 18,
+          "stampDuty": { "percent": 0.003, "on": "buy" }
+        },
+        "CURRENCY_FUT": {
+          "brokerage": { "type": "percentCappedPerOrder", "percent": 0.03, "capPaise": 2000 },
+          "exchangeTxnPercent": { "NSE": 0.00035, "BSE": 0.00045 },
+          "sebiPerCroreRupees": 10,
+          "gstPercent": 18,
+          "stampDuty": { "percent": 0.0001, "on": "buy" }
+        },
+        "CURRENCY_OPT": {
+          "brokerage": { "type": "flatPerOrder", "paise": 2000 },
+          "exchangeTxnPercent": { "NSE": 0.0311, "BSE": 0.001 },
+          "sebiPerCroreRupees": 10,
+          "gstPercent": 18,
+          "stampDuty": { "percent": 0.0001, "on": "buy" }
+        },
+        "COMMODITY_FUT": {
+          "brokerage": { "type": "percentCappedPerOrder", "percent": 0.03, "capPaise": 2000 },
+          "stt": { "percent": 0.01, "on": "sell" },
+          "exchangeTxnPercent": { "MCX": 0.0021, "NSE": 0.0001 },
+          "sebiPerCroreRupees": 10,
+          "gstPercent": 18,
+          "stampDuty": { "percent": 0.002, "on": "buy" }
+        },
+        "COMMODITY_OPT": {
+          "brokerage": { "type": "flatPerOrder", "paise": 2000 },
+          "stt": { "percent": 0.05, "on": "sell" },
+          "exchangeTxnPercent": { "MCX": 0.0418, "NSE": 0.001 },
+          "sebiPerCroreRupees": 10,
+          "gstPercent": 18,
+          "stampDuty": { "percent": 0.003, "on": "buy" }
+        }
+      }
+    },
+    {
+      "effectiveFrom": "2024-10-01",
+      "effectiveTo": "2026-03-31",
+      "source": "F&O STT per Oct 2024 revision (futures 0.02%, options 0.1% sell-side premium); all other components carried back from the 2026-07-19 page fetch. RECONSTRUCTED — must be verified against contract notes from this era before trusting.",
+      "verifiedAgainstContractNotes": false,
+      "rates": {
+        "EQ_DELIVERY": {
+          "brokerage": { "type": "zero" },
+          "stt": { "percent": 0.1, "on": "both" },
+          "exchangeTxnPercent": { "NSE": 0.00297, "BSE": 0.00375 },
+          "sebiPerCroreRupees": 10,
+          "gstPercent": 18,
+          "stampDuty": { "percent": 0.015, "on": "buy" },
+          "dpPerScripSellDayPaise": 1534
+        },
+        "EQ_INTRADAY": {
+          "brokerage": { "type": "percentCappedPerOrder", "percent": 0.03, "capPaise": 2000 },
+          "stt": { "percent": 0.025, "on": "sell" },
+          "exchangeTxnPercent": { "NSE": 0.00297, "BSE": 0.00375 },
+          "sebiPerCroreRupees": 10,
+          "gstPercent": 18,
+          "stampDuty": { "percent": 0.003, "on": "buy" }
+        },
+        "FUT": {
+          "brokerage": { "type": "percentCappedPerOrder", "percent": 0.03, "capPaise": 2000 },
+          "stt": { "percent": 0.02, "on": "sell" },
+          "exchangeTxnPercent": { "NSE": 0.00173, "BSE": 0 },
+          "sebiPerCroreRupees": 10,
+          "gstPercent": 18,
+          "stampDuty": { "percent": 0.002, "on": "buy" }
+        },
+        "OPT": {
+          "brokerage": { "type": "flatPerOrder", "paise": 2000 },
+          "stt": { "percent": 0.1, "on": "sell" },
+          "exchangeTxnPercent": { "NSE": 0.03503, "BSE": 0.0325 },
+          "sebiPerCroreRupees": 10,
+          "gstPercent": 18,
+          "stampDuty": { "percent": 0.003, "on": "buy" }
+        },
+        "CURRENCY_FUT": {
+          "brokerage": { "type": "percentCappedPerOrder", "percent": 0.03, "capPaise": 2000 },
+          "exchangeTxnPercent": { "NSE": 0.00035, "BSE": 0.00045 },
+          "sebiPerCroreRupees": 10,
+          "gstPercent": 18,
+          "stampDuty": { "percent": 0.0001, "on": "buy" }
+        },
+        "CURRENCY_OPT": {
+          "brokerage": { "type": "flatPerOrder", "paise": 2000 },
+          "exchangeTxnPercent": { "NSE": 0.0311, "BSE": 0.001 },
+          "sebiPerCroreRupees": 10,
+          "gstPercent": 18,
+          "stampDuty": { "percent": 0.0001, "on": "buy" }
+        },
+        "COMMODITY_FUT": {
+          "brokerage": { "type": "percentCappedPerOrder", "percent": 0.03, "capPaise": 2000 },
+          "stt": { "percent": 0.01, "on": "sell" },
+          "exchangeTxnPercent": { "MCX": 0.0021, "NSE": 0.0001 },
+          "sebiPerCroreRupees": 10,
+          "gstPercent": 18,
+          "stampDuty": { "percent": 0.002, "on": "buy" }
+        },
+        "COMMODITY_OPT": {
+          "brokerage": { "type": "flatPerOrder", "paise": 2000 },
+          "stt": { "percent": 0.05, "on": "sell" },
+          "exchangeTxnPercent": { "MCX": 0.0418, "NSE": 0.001 },
+          "sebiPerCroreRupees": 10,
+          "gstPercent": 18,
+          "stampDuty": { "percent": 0.003, "on": "buy" }
+        }
+      }
+    }
+  ]
+}

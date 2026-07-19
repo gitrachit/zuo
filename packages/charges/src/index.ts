@@ -1,4 +1,6 @@
-// Indian charges engine — implemented in phase 2 per docs/charges-engine.md.
-// Phase 0 stub exists so the workspace, test runner, and CI exercise this package.
+// Indian charges engine (docs/charges-engine.md).
+// Phase 2 PR A: config schema + dated rate tables + era selection.
+// PR B adds computeCharges; the contract-note fixture gate lands in PR C.
 
-export const PACKAGE_NAME = "@zuo/charges";
+export * from "./config-schema";
+export * from "./select-config";
