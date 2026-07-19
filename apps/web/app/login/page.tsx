@@ -1,14 +1,27 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useState } from "react";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 
 export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
+  );
+}
+
+function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(
+    searchParams.get("error") === "confirmation_failed"
+      ? "Email confirmation failed — try signing in, or sign up again to resend the link."
+      : null,
+  );
   const [busy, setBusy] = useState(false);
 
   async function signIn() {
@@ -25,7 +38,11 @@ export default function LoginPage() {
     setBusy(true);
     setMessage(null);
     const supabase = createSupabaseBrowserClient();
-    const { data, error } = await supabase.auth.signUp({ email, password });
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+    });
     setBusy(false);
     if (error) setMessage(error.message);
     else if (data.session) router.push("/import");
