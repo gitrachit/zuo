@@ -10,6 +10,8 @@ interface TradeListRow {
   opened_at: string;
   closed_at: string | null;
   gross_pnl_paise: number | null;
+  charges_paise: number | null;
+  net_pnl_paise: number | null;
 }
 
 function formatPaise(paise: number | null): string {
@@ -31,7 +33,9 @@ export default async function ImportPage() {
 
   const { data } = await supabase
     .from("trades")
-    .select("id, instrument_key, direction, quantity, opened_at, closed_at, gross_pnl_paise")
+    .select(
+      "id, instrument_key, direction, quantity, opened_at, closed_at, gross_pnl_paise, charges_paise, net_pnl_paise",
+    )
     .order("opened_at", { ascending: false })
     .limit(50);
   const trades = (data ?? []) as TradeListRow[];
@@ -61,7 +65,9 @@ export default async function ImportPage() {
                   <th className="py-1 pr-4">Qty</th>
                   <th className="py-1 pr-4">Opened (IST)</th>
                   <th className="py-1 pr-4">Status</th>
-                  <th className="py-1">Gross P&L</th>
+                  <th className="py-1 pr-4">Net P&L</th>
+                  <th className="py-1 pr-4">Charges</th>
+                  <th className="py-1">Gross</th>
                 </tr>
               </thead>
               <tbody>
@@ -72,7 +78,9 @@ export default async function ImportPage() {
                     <td className="py-1 pr-4">{t.quantity}</td>
                     <td className="py-1 pr-4">{formatIst(t.opened_at)}</td>
                     <td className="py-1 pr-4">{t.closed_at ? "closed" : "open"}</td>
-                    <td className="py-1">{formatPaise(t.gross_pnl_paise)}</td>
+                    <td className="py-1 pr-4 font-semibold">{formatPaise(t.net_pnl_paise)}</td>
+                    <td className="py-1 pr-4">{formatPaise(t.charges_paise)}</td>
+                    <td className="py-1 text-zinc-500">{formatPaise(t.gross_pnl_paise)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -80,7 +88,10 @@ export default async function ImportPage() {
           </div>
         )}
         <p className="mt-2 text-xs text-zinc-500">
-          Gross P&L only — charges-aware net P&L arrives with the charges engine (phase 2).
+          Net P&L = gross − estimated charges. Charges are estimates: Console
+          tradebooks don&apos;t say MIS vs CNC, so equity days are inferred (matched
+          quantity intraday, remainder delivery). &quot;—&quot; means no charge-rate table
+          covers that trade&apos;s date yet, or the position is still open.
         </p>
       </section>
     </main>
