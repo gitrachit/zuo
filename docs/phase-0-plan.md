@@ -81,12 +81,23 @@ Claude Code can:
   add Supabase env vars, confirm production deploy URL.
 
 ## 0.6 Exit checklist (do not advance to phase 1 until all pass + RS confirms)
-- [ ] `pnpm turbo test lint typecheck` green locally and in CI
-- [ ] CI runs on a PR and on `main`
-- [ ] Web hello-world deployed on Vercel (public URL loads)
-- [ ] `packages/types` enums imported and rendered by both `apps/web` and `apps/mobile`
-- [ ] Supabase project live; `/health` reports connected in production
-- [ ] Spec docs live under `docs/` and links in CLAUDE.md/PLAN.md resolve
+- [x] `pnpm turbo test lint typecheck` green locally (18/18 tasks incl. build)
+- [ ] CI runs on a PR and on `main` — workflow is in; first run triggers when the
+      phase-0 PR is opened
+- [ ] Web hello-world deployed on Vercel (public URL loads) — blocked on RS
+- [x] `packages/types` enums imported and rendered by both `apps/web` (vitest
+      render test) and `apps/mobile` (verified via `expo export` Metro bundle)
+- [ ] Supabase project live; `/health` reports connected in production — client
+      scaffold + env-aware `/health` shipped; blocked on RS creating the project
+- [x] Spec docs live under `docs/` and links in CLAUDE.md/PLAN.md resolve
+
+## Status log
+- 2026-07-19 — 0.0–0.4 (Claude side) complete on `claude/phase-0-planning-gfw9yx`.
+  Deviation from CLAUDE.md: scaffolded **Next.js 16.2** (current stable; CLAUDE.md
+  says 15 but was written pre-16). Also current stable: Expo SDK 57 / RN 0.86,
+  React 19.2, Tailwind v4, ESLint 9 flat config, Vitest 4, TS 5.9 (TS 6/7 exist
+  but typescript-eslint support isn't settled). Flag to RS: confirm Next 16 is
+  acceptable or ask Claude to pin 15.
 
 ## Sequencing
 - **Week 1:** 0.0 → 0.1 → 0.2 → 0.3 (all Claude, no external accounts needed;
