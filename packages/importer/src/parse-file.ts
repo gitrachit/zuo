@@ -3,6 +3,7 @@
 
 import ExcelJS from "exceljs";
 import Papa from "papaparse";
+import { mapHeaders, normalizeHeader } from "./headers";
 import type { Cell } from "./map-executions";
 
 export interface TabularFile {
@@ -10,10 +11,35 @@ export interface TabularFile {
   rows: Cell[][];
 }
 
+const HEADER_SCAN_LIMIT = 30;
+
+// Console XLSX exports carry ~14 preamble rows (client id, title, blanks)
+// before the real header; CSVs may grow the same someday. Find the first row
+// that maps to all required fields and treat everything after it as data.
+function detectTable(allRows: Cell[][]): TabularFile {
+  for (let i = 0; i < Math.min(allRows.length, HEADER_SCAN_LIMIT); i++) {
+    const candidate = (allRows[i] ?? []).map((c) => (c === null || c === undefined ? "" : String(c)));
+    if (mapHeaders(candidate).missingRequired.length === 0) {
+      const rows = allRows.slice(i + 1);
+      // Console XLSX quirk: F&O exports write an expiry data column but omit
+      // its header cell. When data rows are exactly one column wider than the
+      // header row and the last header is the execution time, that trailing
+      // column is the expiry date.
+      const dataWidth = rows.slice(0, 50).reduce((w, r) => Math.max(w, r.length), 0);
+      const lastHeader = normalizeHeader(candidate[candidate.length - 1] ?? "");
+      if (dataWidth === candidate.length + 1 && lastHeader === "order_execution_time") {
+        candidate.push("expiry_date");
+      }
+      return { headers: candidate, rows };
+    }
+  }
+  const [headers = [], ...rows] = allRows;
+  return { headers: headers.map((c) => (c === null || c === undefined ? "" : String(c))), rows };
+}
+
 export function parseTradebookCsv(text: string): TabularFile {
   const result = Papa.parse<string[]>(text.trim(), { skipEmptyLines: true });
-  const [headers = [], ...rows] = result.data;
-  return { headers, rows };
+  return detectTable(result.data);
 }
 
 function cellValue(value: ExcelJS.CellValue): Cell {
@@ -46,6 +72,5 @@ export async function parseTradebookXlsx(data: ArrayBuffer | Buffer): Promise<Ta
     }
     allRows.push(cells);
   });
-  const [headerRow = [], ...rows] = allRows;
-  return { headers: headerRow.map((h) => (h === null ? "" : String(h))), rows };
+  return detectTable(allRows);
 }
