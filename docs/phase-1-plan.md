@@ -68,3 +68,10 @@ importer test suite green.
   manual verification that matched round-trips look right.
 - NOTE for phase 8 (SMTP): Supabase built-in email is ~2-4/hr — wire custom
   SMTP (e.g. Resend) before beta signups.
+- 2026-07-19 — EQ + NFO CSV and F&O XLSX fixtures added (PRs #10, #11). Two
+  real-file bugs fixed: Console XLSX preamble/headerless-expiry-column, and
+  float-artifact price warnings. XLSX re-import verified on production
+  (263 duplicates, 0 new, no warnings).
+- 2026-07-19 — **PHASE 1 CLOSED.** RS verified matched trades against records
+  ("looks right"). Exit criteria met: real tradebooks (MCX/EQ/NFO, CSV+XLSX)
+  import cleanly, round-trips verified, importer suite green (114 tests).
