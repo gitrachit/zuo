@@ -57,3 +57,14 @@ importer test suite green.
 
 ## Status log
 - 2026-07-19 — Phase 1 started (RS confirmed). PR A in flight.
+- 2026-07-19 — PRs A–E merged. Full flow live on production: auth (email/password
+  + confirmation callback), /api/import, /import UI. E2E-verified in headless
+  Chromium against live Supabase incl. idempotent re-import.
+- 2026-07-19 — RS imported a REAL MCX tradebook on production: 459 rows → 459
+  executions → 190 trades, 2 open. File committed as
+  fixtures/tradebooks/mcx-com-2025.csv with end-to-end tests pinning those
+  numbers. Fixed: Console pads prices to 6dp — no longer false-flagged as
+  rounding. Remaining for exit: EQ + NFO fixtures (RS), XLSX variant, RS's
+  manual verification that matched round-trips look right.
+- NOTE for phase 8 (SMTP): Supabase built-in email is ~2-4/hr — wire custom
+  SMTP (e.g. Resend) before beta signups.

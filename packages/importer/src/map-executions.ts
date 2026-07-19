@@ -52,15 +52,20 @@ function cellString(cell: Cell): string {
   return String(cell).trim();
 }
 
-/** "1450.75" | 1450.75 → 145075 paise. Integer string math; >2dp rounds half-up. */
+/**
+ * "1450.75" | 1450.75 → 145075 paise. Integer string math; digits beyond the
+ * paisa round half-up. `rounded` is true only when the dropped digits are
+ * non-zero — Console pads every price to 6dp ("90554.000000"), which is lossless.
+ */
 export function rupeesToPaise(value: Cell): { paise: number; rounded: boolean } | null {
   const s = cellString(value);
   const match = /^(\d+)(?:\.(\d+))?$/.exec(s);
   if (!match || match[1] === undefined) return null;
   const frac = match[2] ?? "";
   const base = Number(match[1]) * 100 + Number((frac + "00").slice(0, 2));
-  if (frac.length <= 2) return { paise: base, rounded: false };
-  const roundUp = Number(frac[2]) >= 5;
+  const dropped = frac.slice(2);
+  if (/^0*$/.test(dropped)) return { paise: base, rounded: false };
+  const roundUp = Number(dropped[0]) >= 5;
   return { paise: base + (roundUp ? 1 : 0), rounded: true };
 }
 
