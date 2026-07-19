@@ -15,7 +15,7 @@ Solo founder (RS). You (Claude Code) are the primary builder. Read PLAN.md for p
 4. Charges rates are **config-driven and dated** (see docs/charges-engine.md). Never hardcode a rate in logic.
 
 ## Repo layout (Turborepo)
-- `apps/web` — Next.js 15 (App Router), Tailwind. Public site + dashboard.
+- `apps/web` — Next.js 16 (App Router), Tailwind. Public site + dashboard.
 - `apps/mobile` — Expo (phase: post-web-launch; scaffold only until then).
 - `apps/api` — Go (chi) service: ingestion, sync jobs, debrief batch. May start as Next.js route handlers; extract to Go when jobs need scheduling.
 - `packages/types` — canonical trade model (docs/trade-model.md is the source of truth).

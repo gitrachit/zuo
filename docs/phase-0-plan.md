@@ -98,6 +98,8 @@ Claude Code can:
   React 19.2, Tailwind v4, ESLint 9 flat config, Vitest 4, TS 5.9 (TS 6/7 exist
   but typescript-eslint support isn't settled). Flag to RS: confirm Next 16 is
   acceptable or ask Claude to pin 15.
+- 2026-07-19 — RS approved Next 16; CLAUDE.md/README updated. RS setting up
+  Supabase + Vercel.
 
 ## Sequencing
 - **Week 1:** 0.0 → 0.1 → 0.2 → 0.3 (all Claude, no external accounts needed;

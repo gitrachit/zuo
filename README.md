@@ -8,7 +8,7 @@ AI copilot that narrates your own numbers — never advice, never signals.
 
 | Path | What |
 | --- | --- |
-| `apps/web` | Next.js 15 (App Router) — public site + dashboard |
+| `apps/web` | Next.js 16 (App Router) — public site + dashboard |
 | `apps/mobile` | Expo shell (post-web-launch; scaffold only) |
 | `packages/types` | Canonical trade model types (`docs/trade-model.md` is source of truth) |
 | `packages/charges` | Indian charges engine — pure functions, config-driven rates |
