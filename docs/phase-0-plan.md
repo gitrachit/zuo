@@ -82,13 +82,12 @@ Claude Code can:
 
 ## 0.6 Exit checklist (do not advance to phase 1 until all pass + RS confirms)
 - [x] `pnpm turbo test lint typecheck` green locally (18/18 tasks incl. build)
-- [ ] CI runs on a PR and on `main` — workflow is in; first run triggers when the
-      phase-0 PR is opened
-- [ ] Web hello-world deployed on Vercel (public URL loads) — blocked on RS
+- [x] CI runs on a PR and on `main` — green on PRs #1/#2 and on `main` pushes
+- [x] Web hello-world deployed on Vercel — https://zuo-web.vercel.app loads (200)
 - [x] `packages/types` enums imported and rendered by both `apps/web` (vitest
       render test) and `apps/mobile` (verified via `expo export` Metro bundle)
-- [ ] Supabase project live; `/health` reports connected in production — client
-      scaffold + env-aware `/health` shipped; blocked on RS creating the project
+- [x] Supabase project live (ap-south-1); production `/health` returns
+      `{"ok":true,"app":"Zuo","supabase":"connected"}`
 - [x] Spec docs live under `docs/` and links in CLAUDE.md/PLAN.md resolve
 
 ## Status log
@@ -100,6 +99,10 @@ Claude Code can:
   acceptable or ask Claude to pin 15.
 - 2026-07-19 — RS approved Next 16; CLAUDE.md/README updated. RS setting up
   Supabase + Vercel.
+- 2026-07-19 — **Phase 0 exit criteria all met.** Supabase live in ap-south-1;
+  Vercel production at https://zuo-web.vercel.app (root `apps/web`); `/health`
+  verified `connected` locally and in production. Remaining RS item (not a phase
+  gate): Kite Connect approval emails. Awaiting RS confirmation to start phase 1.
 
 ## Sequencing
 - **Week 1:** 0.0 → 0.1 → 0.2 → 0.3 (all Claude, no external accounts needed;
