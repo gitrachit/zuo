@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { ImportClient } from "./import-client";
@@ -44,7 +45,12 @@ export default async function ImportPage() {
     <main className="mx-auto flex min-h-screen max-w-3xl flex-col gap-8 p-8">
       <header className="flex items-baseline justify-between">
         <h1 className="font-mono text-2xl font-bold">Import tradebook</h1>
-        <span className="text-sm text-zinc-500">{user.email}</span>
+        <div className="flex items-baseline gap-4">
+          <Link href="/dashboard" className="text-sm text-zinc-500 underline hover:text-zinc-300">
+            Dashboard →
+          </Link>
+          <span className="text-sm text-zinc-500">{user.email}</span>
+        </div>
       </header>
 
       <ImportClient />

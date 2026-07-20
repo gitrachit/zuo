@@ -24,3 +24,27 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* design-notes.md "ledger meets terminal" tokens, scoped to the dashboard.
+   Parchment-gold (--coach) is RESERVED for AI voice surfaces — unused until
+   the copilot (phase 4). */
+.zuo-terminal {
+  --bg: #0c1116;
+  --surface: #131a21;
+  --surface2: #0f151b;
+  --line: #1f2933;
+  --text: #e8edf2;
+  --muted: #7c8894;
+  --gain: #45d0a1;
+  --loss: #e2685c;
+  --coach: #e3c08d;
+
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-plex-sans), system-ui, sans-serif;
+}
+
+.zuo-terminal .mono {
+  font-family: var(--font-plex-mono), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+}
