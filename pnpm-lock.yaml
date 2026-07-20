@@ -60,6 +60,9 @@ importers:
       '@supabase/supabase-js':
         specifier: ^2.110.7
         version: 2.110.7
+      '@zuo/analytics':
+        specifier: workspace:*
+        version: link:../../packages/analytics
       '@zuo/charges':
         specifier: workspace:*
         version: link:../../packages/charges
